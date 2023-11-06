@@ -24,6 +24,14 @@ Using Debian family:
 sudo apt update && sudo apt install libserialport-dev
 ```
 
+## Accessing serialPorts
+
+To make sure your user can acess serial ports, add your user to group uucp:
+
+```Bash
+sudo usermod -a -G uucp <your_user>
+```
+
 ## Compiling just the Lib
 
 ```Bash
