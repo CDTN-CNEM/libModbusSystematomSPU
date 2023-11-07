@@ -19,6 +19,29 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "libModbusSystematomSPU.h"
 #include <string>
+#include <chrono>
+
+std::string getTimeString() {
+    static std::chrono::time_point<std::chrono::high_resolution_clock> tempoInicial = std::chrono::high_resolution_clock::now();
+
+    // Obtém o tempo atual
+    std::time_t tempoAtual = std::time(nullptr);
+    struct tm* tempoInfo = std::localtime(&tempoAtual);
+
+    // Obtém horas, minutos, segundos e milisegundos
+    int horas = tempoInfo->tm_hour;
+    int minutos = tempoInfo->tm_min;
+    int segundos = tempoInfo->tm_sec;
+    std::string millisegundos = std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count() % 1000);
+    auto tempoAtualMillis = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
+    auto tempoInicialMillis = std::chrono::time_point_cast<std::chrono::milliseconds>(tempoInicial);
+    auto diferencaMillis = tempoAtualMillis - tempoInicialMillis;
+
+    // Formata a string
+    std::string horaFormatada = std::to_string(horas) + ":" + std::to_string(minutos) + ":" + std::to_string(segundos) + "." + millisegundos + "\t [" + std::to_string(diferencaMillis.count()) + "]";
+
+    return horaFormatada;
+}
 
 int main(int argc, char* argv[])
 {
@@ -32,10 +55,10 @@ int main(int argc, char* argv[])
     try
     {
         libModbusSystematomSPU SPUchA(argv[1]); //SPU channel A
-        for(int i=0;i>std::stoi(argv[3]);i++)
+        for(int i=0;i<std::stoi(argv[3]);i++)
         {
             SPUchA.readAllRegisters(std::stoi(argv[2]));
-            std::cout << SPUchA.get_N_DATA_FP() << "\t" << SPUchA.get_T_DATA_FP() << std::endl;
+            std::cout << getTimeString() << "\t" << SPUchA.get_N_DATA_FP() << "\t" << SPUchA.get_T_DATA_FP() << std::endl;
         }
     }
     catch(int error) { return 2; }

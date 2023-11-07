@@ -104,22 +104,22 @@ void libModbusSystematomSPU::readAllRegisters(const int readTimeoutMillis)
     if (result < 0) throw std::runtime_error("Error: Failed to send data");
 
     // Read data from the serial port with a timeout
-    const int dataSize = 2*0x006E; // Total number of bytes to read
+    const int dataSize = 3+2*0x006E; // Total number of bytes to read
     uint8_t data[dataSize];
 
     result = sp_blocking_read(port, data, dataSize /*sizeof(data)*/, readTimeoutMillis);
-    if (result != 41) throw std::runtime_error("Error: Failed to read data");
+    if (result <= dataSize-1) throw std::runtime_error("Error: Failed to read data");
 
     // Convert data in floats variables
-    N_DATA_FP       = conv4BytesToFloat(data[ 2],data[ 3],data[ 4],data[ 5]);
-    T_DATA_FP       = conv4BytesToFloat(data[ 6],data[ 7],data[ 8],data[ 9]);
-    F1_DATA_FP      = conv4BytesToFloat(data[10],data[11],data[12],data[13]);
-    F2_DATA_FP      = conv4BytesToFloat(data[14],data[15],data[16],data[17]);
-    F3_DATA_FP      = conv4BytesToFloat(data[18],data[19],data[20],data[21]);
-    EMR_N_THRESHOLD = conv4BytesToFloat(data[22],data[23],data[24],data[25]);
-    WRN_N_THRESHOLD = conv4BytesToFloat(data[27],data[28],data[29],data[30]);
-    EMR_T_THRESHOLD = conv4BytesToFloat(data[31],data[32],data[33],data[34]);
-    WRN_T_THRESHOLD = conv4BytesToFloat(data[35],data[36],data[37],data[38]);
+    N_DATA_FP       = conv4BytesToFloat(data[ 7],data[ 8],data[ 9],data[10]);
+    T_DATA_FP       = conv4BytesToFloat(data[11],data[12],data[13],data[14]);
+    F1_DATA_FP      = conv4BytesToFloat(data[15],data[16],data[17],data[18]);
+    F2_DATA_FP      = conv4BytesToFloat(data[19],data[20],data[21],data[22]);
+    F3_DATA_FP      = conv4BytesToFloat(data[23],data[24],data[25],data[26]);
+    EMR_N_THRESHOLD = conv4BytesToFloat(data[27],data[28],data[29],data[30]);
+    WRN_N_THRESHOLD = conv4BytesToFloat(data[31],data[32],data[33],data[34]);
+    EMR_T_THRESHOLD = conv4BytesToFloat(data[35],data[36],data[37],data[38]);
+    WRN_T_THRESHOLD = conv4BytesToFloat(data[39],data[40],data[41],data[42]);
     EMR_N           = data[201];
     WRN_N           = data[203];
     EMR_T           = data[205];
