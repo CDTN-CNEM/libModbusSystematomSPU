@@ -1,7 +1,7 @@
 /*
 libModbusSystematomSPU is a library to communicate with the SystemAtom SPU
 using MODBUS-RTU (RS-485) on a GNU operating system.
-Copyright (C) 2023  Thalles Campagnani
+Copyright (C) 2023-2024  Thalles Campagnani
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <cstdlib>
 #include <cstdint>
 
+
 void libModbusSystematomSPU_license();
 
 class libModbusSystematomSPU {
@@ -33,7 +34,9 @@ public:
     libModbusSystematomSPU(const char* portname);
     ~libModbusSystematomSPU();
 
-    void readAllRegisters(const int readTimeoutMillis);
+    bool readAllRegisters(const int readTimeoutMillis);
+
+    const char*  get_portname();
 
     float   get_N_DATA_FP();
     float   get_T_DATA_FP();

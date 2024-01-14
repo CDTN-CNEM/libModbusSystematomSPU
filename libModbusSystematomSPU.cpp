@@ -1,7 +1,7 @@
 /*
 libModbusSystematomSPU is a library to communicate with the SystemAtom SPU
 using MODBUS-RTU (RS-485) on a GNU operating system.
-Copyright (C) 2023  Thalles Campagnani
+Copyright (C) 2023-2024 Thalles Campagnani
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,11 +17,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "libModbusSystematomSPU.h"
+#include "libModbusSystematomSPU.hpp"
 
 void libModbusSystematomSPU_license()
 {
-    std::cout << "libModbusSystematomSPU  Copyright (C) 2023  Thalles Campagnani" << std::endl;
+    std::cout << "libModbusSystematomSPU  Copyright (C) 2023-2024 Thalles Campagnani" << std::endl;
     std::cout << "This program comes with ABSOLUTELY NO WARRANTY;" << std::endl;
     std::cout << "This is free software, and you are welcome to redistribute it" << std::endl;
     std::cout << "under certain conditions; For more details read the file LICENSE" << std::endl;
@@ -32,11 +32,11 @@ libModbusSystematomSPU::libModbusSystematomSPU(const char* portname) : portname(
 {
     // Create a serial port handle
     result = sp_get_port_by_name(portname, &port);
-    if (result != SP_OK) throw std::runtime_error("Error: Unable to get the serial port by name");
+    //if (result != SP_OK) throw std::runtime_error("Error: Unable to get the serial port by name");
     
     // Open the serial port
     result = sp_open(port, SP_MODE_READ_WRITE); // Open in read-write mode
-    if (result != SP_OK) throw std::runtime_error("Error: Unable to open the serial port");
+    //if (result != SP_OK) throw std::runtime_error("Error: Unable to open the serial port");
 
     // Set the baud rate, data bits, stop bits, and parity
     sp_set_baudrate (port, 57600);
@@ -51,6 +51,8 @@ libModbusSystematomSPU::~libModbusSystematomSPU() {
         sp_free_port(port);
     }
 }
+
+const char*  libModbusSystematomSPU::get_portname()    {return portname;}
 
 float   libModbusSystematomSPU::get_N_DATA_FP()        { return N_DATA_FP; }
 float   libModbusSystematomSPU::get_T_DATA_FP()        { return T_DATA_FP; }
@@ -80,7 +82,7 @@ float libModbusSystematomSPU::conv4BytesToFloat(uint8_t data1, uint8_t data2, ui
     return *floatValue;
 }
 
-void libModbusSystematomSPU::readAllRegisters(const int readTimeoutMillis)
+bool libModbusSystematomSPU::readAllRegisters(const int readTimeoutMillis)
 {
     /*
         PROTOCOL INFORMATION: 
@@ -94,22 +96,31 @@ void libModbusSystematomSPU::readAllRegisters(const int readTimeoutMillis)
                 00 6D   - number of regs to read;
                 84 27   - CRC;
     */
-    if (!port) throw std::runtime_error("Error: Can't readAllRegisters because the serial port isn't open");
-
+    if (!port)// throw std::runtime_error("Error: Can't readAllRegisters because the serial port isn't open");
+    {
+        //std::cerr << "Error: Failed to read data" << std::endl;
+        return 0;//0=não leu
+    }
     // Data to be sent to the slave device
     uint8_t send_data[] = {0x01, 0x03, 0x00, 0x00, 0x00, 0x6D, 0x84, 0x27};
 
     // Write the data to the serial port
     result = sp_blocking_write(port, send_data, sizeof(send_data), readTimeoutMillis);
-    if (result < 0) throw std::runtime_error("Error: Failed to send data");
-
+    if (result < 0) //throw std::runtime_error("Error: Failed to send data");
+    {
+        //std::cerr << "Error: Failed to read data" << std::endl;
+        return 0;//0=não leu
+    }
     // Read data from the serial port with a timeout
     const int dataSize = 3+2*0x006E; // Total number of bytes to read
     uint8_t data[dataSize];
 
     result = sp_blocking_read(port, data, dataSize /*sizeof(data)*/, readTimeoutMillis);
-    if (result <= dataSize-1) throw std::runtime_error("Error: Failed to read data");
-
+    if (result <= dataSize-1) //throw std::runtime_error("Error: Failed to read data");
+    {
+        //std::cerr << "Error: Failed to read data" << std::endl;
+        return 0;//0=não leu
+    }
     // Convert data in floats variables
     N_DATA_FP       = conv4BytesToFloat(data[ 7],data[ 8],data[ 9],data[10]);
     T_DATA_FP       = conv4BytesToFloat(data[11],data[12],data[13],data[14]);
@@ -130,6 +141,7 @@ void libModbusSystematomSPU::readAllRegisters(const int readTimeoutMillis)
     RDY             = data[215];
     TEST            = data[217];
     XXXX            = data[219];
+    return 1;//1=leu
 }
 
 /*
