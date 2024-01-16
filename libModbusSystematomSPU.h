@@ -31,12 +31,12 @@ void libModbusSystematomSPU_license();
 
 class libModbusSystematomSPU {
 public:
-    libModbusSystematomSPU(const char* portname);
+    libModbusSystematomSPU(std::string portname);
     ~libModbusSystematomSPU();
 
     bool readAllRegisters(const int readTimeoutMillis);
 
-    const char*  get_portname();
+    std::string  get_portname();
 
     float   get_N_DATA_FP();
     float   get_T_DATA_FP();

@@ -28,10 +28,10 @@ void libModbusSystematomSPU_license()
     std::cout << "that came together with the library." << std::endl << std::endl;
 }
 
-libModbusSystematomSPU::libModbusSystematomSPU(const char* portname) : portname(portname), port(nullptr)
+libModbusSystematomSPU::libModbusSystematomSPU(std::string portname) : portname(portname.c_str()), port(nullptr)
 {
     // Create a serial port handle
-    result = sp_get_port_by_name(portname, &port);
+    result = sp_get_port_by_name(portname.c_str(), &port);
     //if (result != SP_OK) throw std::runtime_error("Error: Unable to get the serial port by name");
     
     // Open the serial port
@@ -52,7 +52,7 @@ libModbusSystematomSPU::~libModbusSystematomSPU() {
     }
 }
 
-const char*  libModbusSystematomSPU::get_portname()    {return portname;}
+std::string  libModbusSystematomSPU::get_portname()    {return portname;}
 
 float   libModbusSystematomSPU::get_N_DATA_FP()        { return N_DATA_FP; }
 float   libModbusSystematomSPU::get_T_DATA_FP()        { return T_DATA_FP; }
