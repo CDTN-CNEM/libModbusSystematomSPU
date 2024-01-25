@@ -28,56 +28,56 @@ void libModbusSystematomSPU_license()
     std::cout << "that came together with the library." << std::endl << std::endl;
 }
 
-libModbusSystematomSPU::libModbusSystematomSPU(std::string portname) : portname(portname.c_str()), port(nullptr)
+libModbusSystematomSPU::libModbusSystematomSPU(std::string portname) : portname(portname.c_str())//, port(nullptr)
 {
-    // Create a serial port handle
-    result = sp_get_port_by_name(portname.c_str(), &port);
-    //if (result != SP_OK) throw std::runtime_error("Error: Unable to get the serial port by name");
-    
-    // Open the serial port
-    result = sp_open(port, SP_MODE_READ_WRITE); // Open in read-write mode
-    //if (result != SP_OK) throw std::runtime_error("Error: Unable to open the serial port");
+    // Create a new Modbus context
+    ctx = modbus_new_rtu(portname.c_str(), 57600, 'N', 8, 1);
 
-    // Set the baud rate, data bits, stop bits, and parity
-    sp_set_baudrate (port, 57600);
-    sp_set_bits     (port, 8);
-    sp_set_stopbits (port, 1);
-    sp_set_parity   (port, SP_PARITY_NONE);
-}
+    // Set the slave address
+    modbus_set_slave(ctx, 0x01);
 
-libModbusSystematomSPU::~libModbusSystematomSPU() {
-    if (port) {
-        sp_close(port);
-        sp_free_port(port);
+    // Open the Modbus connection
+    if (ctx == nullptr || modbus_connect(ctx) == -1) {
+        std::cerr << "Error: Failed to connect to Modbus device - " << modbus_strerror(errno) << std::endl;
+        libModbusSystematomSPU::~libModbusSystematomSPU();
     }
 }
 
-std::string  libModbusSystematomSPU::get_portname()    {return portname;}
+libModbusSystematomSPU::~libModbusSystematomSPU() {
+    // Close the Modbus connection
+    if (ctx) {
+        modbus_close(ctx);
+        modbus_free(ctx);
+    }
+}
 
-float   libModbusSystematomSPU::get_N_DATA_FP()        { return N_DATA_FP; }
-float   libModbusSystematomSPU::get_T_DATA_FP()        { return T_DATA_FP; }
-float   libModbusSystematomSPU::get_F1_DATA_FP()       { return F1_DATA_FP; }
-float   libModbusSystematomSPU::get_F2_DATA_FP()       { return F2_DATA_FP; }
-float   libModbusSystematomSPU::get_F3_DATA_FP()       { return F3_DATA_FP; }
-float   libModbusSystematomSPU::get_EMR_N_THRESHOLD()  { return EMR_N_THRESHOLD; }
-float   libModbusSystematomSPU::get_WRN_N_THRESHOLD()  { return WRN_N_THRESHOLD; }
-float   libModbusSystematomSPU::get_EMR_T_THRESHOLD()  { return EMR_T_THRESHOLD; }
-float   libModbusSystematomSPU::get_WRN_T_THRESHOLD()  { return WRN_T_THRESHOLD; }
-uint8_t libModbusSystematomSPU::get_EMR_N()            { return EMR_N; }
-uint8_t libModbusSystematomSPU::get_WRN_N()            { return WRN_N; }
-uint8_t libModbusSystematomSPU::get_EMR_T()            { return EMR_T; }
-uint8_t libModbusSystematomSPU::get_WRN_T()            { return WRN_T; }
-uint8_t libModbusSystematomSPU::get_R1()               { return R1; }
-uint8_t libModbusSystematomSPU::get_R2()               { return R2; }
-uint8_t libModbusSystematomSPU::get_R3()               { return R3; }
-uint8_t libModbusSystematomSPU::get_RDY()              { return RDY; }
-uint8_t libModbusSystematomSPU::get_TEST()             { return TEST; }
-uint8_t libModbusSystematomSPU::get_XXXX()             { return XXXX; }
+std::string  libModbusSystematomSPU::get_portname()    { return portname; }
 
+SPU_DATA libModbusSystematomSPU::get_all()             { return spuData; }
 
-float libModbusSystematomSPU::conv4BytesToFloat(uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4)
+float   libModbusSystematomSPU::get_N_DATA_FP()        { return spuData.N_DATA_FP; }
+float   libModbusSystematomSPU::get_T_DATA_FP()        { return spuData.T_DATA_FP; }
+float   libModbusSystematomSPU::get_F1_DATA_FP()       { return spuData.F1_DATA_FP; }
+float   libModbusSystematomSPU::get_F2_DATA_FP()       { return spuData.F2_DATA_FP; }
+float   libModbusSystematomSPU::get_F3_DATA_FP()       { return spuData.F3_DATA_FP; }
+float   libModbusSystematomSPU::get_EMR_N_THRESHOLD()  { return spuData.EMR_N_THRESHOLD; }
+float   libModbusSystematomSPU::get_WRN_N_THRESHOLD()  { return spuData.WRN_N_THRESHOLD; }
+float   libModbusSystematomSPU::get_EMR_T_THRESHOLD()  { return spuData.EMR_T_THRESHOLD; }
+float   libModbusSystematomSPU::get_WRN_T_THRESHOLD()  { return spuData.WRN_T_THRESHOLD; }
+uint8_t libModbusSystematomSPU::get_EMR_N()            { return spuData.EMR_N; }
+uint8_t libModbusSystematomSPU::get_WRN_N()            { return spuData.WRN_N; }
+uint8_t libModbusSystematomSPU::get_EMR_T()            { return spuData.EMR_T; }
+uint8_t libModbusSystematomSPU::get_WRN_T()            { return spuData.WRN_T; }
+uint8_t libModbusSystematomSPU::get_R1()               { return spuData.R1; }
+uint8_t libModbusSystematomSPU::get_R2()               { return spuData.R2; }
+uint8_t libModbusSystematomSPU::get_R3()               { return spuData.R3; }
+uint8_t libModbusSystematomSPU::get_RDY()              { return spuData.RDY; }
+uint8_t libModbusSystematomSPU::get_TEST()             { return spuData.TEST; }
+uint8_t libModbusSystematomSPU::get_XXXX()             { return spuData.XXXX; }
+
+float libModbusSystematomSPU::conv2RegsToFloat(uint16_t data1, uint16_t data2)
 {
-    uint8_t data[4] = {data1, data2, data3, data4};
+    uint16_t data[2] = {data2, data1};
     float* floatValue = reinterpret_cast<float*>(data);
     return *floatValue;
 }
@@ -86,61 +86,51 @@ bool libModbusSystematomSPU::readAllRegisters(const int readTimeoutMillis)
 {
     /*
         PROTOCOL INFORMATION: 
-            LOOP: 
-                Sendto slave device: 01 03 00 00 00 6D 84 27 
-                Receive back regs data.
-            Explanation:
                 01      - is slave adress; 
-                03      - is command (read data regs); 
                 00 00   - start adress of regs; 
                 00 6D   - number of regs to read;
-                84 27   - CRC;
     */
-    if (!port)// throw std::runtime_error("Error: Can't readAllRegisters because the serial port isn't open");
-    {
-        //std::cerr << "Error: Failed to read data" << std::endl;
-        return 0;//0=não leu
+    
+    // Check if the Modbus context exists
+    if (!ctx) {
+        std::cerr << "Error: Modbus context does not exist." << std::endl;
+        return false;
     }
-    // Data to be sent to the slave device
-    uint8_t send_data[] = {0x01, 0x03, 0x00, 0x00, 0x00, 0x6D, 0x84, 0x27};
 
-    // Write the data to the serial port
-    result = sp_blocking_write(port, send_data, sizeof(send_data), readTimeoutMillis);
-    if (result < 0) //throw std::runtime_error("Error: Failed to send data");
-    {
-        //std::cerr << "Error: Failed to read data" << std::endl;
-        return 0;//0=não leu
-    }
-    // Read data from the serial port with a timeout
-    const int dataSize = 3+2*0x006E; // Total number of bytes to read
-    uint8_t data[dataSize];
+    // Read from the register 0x0001 to 0x006D
+    int num_registers = 0x6D; // Number of registers to read
+    int start_address = 0x01; // Starting address
+    const int dataSize = 1 + num_registers - start_address; // Total number of bytes to read
+    uint16_t data[dataSize];
 
-    result = sp_blocking_read(port, data, dataSize /*sizeof(data)*/, readTimeoutMillis);
-    if (result <= dataSize-1) //throw std::runtime_error("Error: Failed to read data");
-    {
-        //std::cerr << "Error: Failed to read data" << std::endl;
-        return 0;//0=não leu
+    int result = modbus_read_registers(ctx, start_address, num_registers, data);
+
+    if (result == -1) {
+        std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
+        return false;
     }
+
     // Convert data in floats variables
-    N_DATA_FP       = conv4BytesToFloat(data[ 7],data[ 8],data[ 9],data[10]);
-    T_DATA_FP       = conv4BytesToFloat(data[11],data[12],data[13],data[14]);
-    F1_DATA_FP      = conv4BytesToFloat(data[15],data[16],data[17],data[18]);
-    F2_DATA_FP      = conv4BytesToFloat(data[19],data[20],data[21],data[22]);
-    F3_DATA_FP      = conv4BytesToFloat(data[23],data[24],data[25],data[26]);
-    EMR_N_THRESHOLD = conv4BytesToFloat(data[27],data[28],data[29],data[30]);
-    WRN_N_THRESHOLD = conv4BytesToFloat(data[31],data[32],data[33],data[34]);
-    EMR_T_THRESHOLD = conv4BytesToFloat(data[35],data[36],data[37],data[38]);
-    WRN_T_THRESHOLD = conv4BytesToFloat(data[39],data[40],data[41],data[42]);
-    EMR_N           = data[201];
-    WRN_N           = data[203];
-    EMR_T           = data[205];
-    WRN_T           = data[207];
-    R1              = data[209];
-    R2              = data[211];
-    R3              = data[213];
-    RDY             = data[215];
-    TEST            = data[217];
-    XXXX            = data[219];
+    spuData.READ            = true;
+    spuData.N_DATA_FP       = conv2RegsToFloat(data[ 0], data[ 1]);
+    spuData.T_DATA_FP       = conv2RegsToFloat(data[ 2], data[ 3]);
+    spuData.F1_DATA_FP      = conv2RegsToFloat(data[ 4], data[ 5]);
+    spuData.F2_DATA_FP      = conv2RegsToFloat(data[ 6], data[ 7]);
+    spuData.F3_DATA_FP      = conv2RegsToFloat(data[ 8], data[ 9]);
+    spuData.EMR_N_THRESHOLD = conv2RegsToFloat(data[10], data[11]);
+    spuData.WRN_N_THRESHOLD = conv2RegsToFloat(data[12], data[13]);
+    spuData.EMR_T_THRESHOLD = conv2RegsToFloat(data[14], data[15]);
+    spuData.WRN_T_THRESHOLD = conv2RegsToFloat(data[16], data[16]);
+    spuData.EMR_N           = data[17];
+    spuData.WRN_N           = data[18];
+    spuData.EMR_T           = data[19];
+    spuData.WRN_T           = data[20];
+    spuData.R1              = data[21];
+    spuData.R2              = data[22];
+    spuData.R3              = data[23];
+    spuData.RDY             = data[24];
+    spuData.TEST            = data[25];
+    spuData.XXXX            = data[26];
     return 1;//1=leu
 }
 
@@ -187,3 +177,27 @@ bool libModbusSystematomSPU::readAllRegisters(const int readTimeoutMillis)
 0x006C  TEST
 0x006D  ?
 */
+
+
+bool libModbusSystematomSPU::testMax(const int readTimeoutMillis)
+{
+    if (!ctx) {
+        std::cerr << "Error: Modbus context does not exist." << std::endl;
+        return false;
+    }
+    int num_registers = 0x02; // Number of registers to read
+    int start_address = 0x01; // Starting address
+    const int dataSize = 1 + num_registers - start_address; // Total number of bytes to read
+    uint16_t data[dataSize];
+
+    int result = modbus_read_registers(ctx, start_address, num_registers, data);
+
+    if (result == -1) {
+        std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
+        return false;
+    }
+
+    spuData.READ            = true;
+    spuData.N_DATA_FP       = conv2RegsToFloat(data[ 0], data[ 1]);
+    return 1;//1=leu
+}

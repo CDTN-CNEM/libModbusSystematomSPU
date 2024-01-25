@@ -20,7 +20,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #ifndef LIB_MODBUS_SYSTEMATOM_SPU
 #define LIB_MODBUS_SYSTEMATOM_SPU
 
-#include <libserialport.h>
+#include <modbus/modbus-rtu.h>
+#include <modbus/modbus.h>
+
+//#include <libserialport.h>
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
@@ -62,6 +65,8 @@ public:
 
     std::string  get_portname();
 
+    SPU_DATA get_all();
+
     float   get_N_DATA_FP();
     float   get_T_DATA_FP();
     float   get_F1_DATA_FP();
@@ -81,33 +86,15 @@ public:
     uint8_t get_RDY();
     uint8_t get_TEST();
     uint8_t get_XXXX();
+    bool testMax(const int readTimeoutMillis);
     
     
 private:
-    const char* portname;
-    struct sp_port* port;
-    sp_return result;
-
-    float N_DATA_FP;
-    float T_DATA_FP;
-    float F1_DATA_FP;
-    float F2_DATA_FP;
-    float F3_DATA_FP;
-    float EMR_N_THRESHOLD;
-    float WRN_N_THRESHOLD;
-    float EMR_T_THRESHOLD;
-    float WRN_T_THRESHOLD;
-    uint8_t EMR_N;
-    uint8_t WRN_N;
-    uint8_t EMR_T;
-    uint8_t WRN_T;
-    uint8_t R1;
-    uint8_t R2;
-    uint8_t R3;
-    uint8_t RDY;
-    uint8_t TEST;
-    uint8_t XXXX;
+    std::string portname;
+    modbus_t* ctx;
+    SPU_DATA spuData;
     float conv4BytesToFloat(uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4);
+    float conv2RegsToFloat(uint16_t data1, uint16_t data2);
 };
 
 #endif // LIB_MODBUS_SYSTEMATOM_SPU

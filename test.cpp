@@ -57,8 +57,11 @@ int main(int argc, char* argv[])
         libModbusSystematomSPU SPUchA(argv[1]); //SPU channel A
         for(int i=0;i<std::stoi(argv[3]);i++)
         {
-            SPUchA.readAllRegisters(std::stoi(argv[2]));
-            std::cout << getTimeString() << "\t" << SPUchA.get_N_DATA_FP() << "\t" << SPUchA.get_T_DATA_FP() << std::endl;
+            if(SPUchA.readAllRegisters(std::stoi(argv[2])))
+            std::cout << getTimeString() << "\t" << SPUchA.get_N_DATA_FP() << "\t" << SPUchA.get_T_DATA_FP() << "\t" << SPUchA.get_F2_DATA_FP() << "\t" << SPUchA.get_F3_DATA_FP() << std::endl;
+            //if(SPUchA.testMax(std::stoi(argv[2])))
+            //std::cout << getTimeString() << "\t" << SPUchA.get_N_DATA_FP() << std::endl;
+            
         }
     }
     catch(int error) { return 2; }
