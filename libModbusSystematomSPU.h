@@ -60,41 +60,45 @@ class libModbusSystematomSPU {
 public:
     libModbusSystematomSPU(std::string portname);
     ~libModbusSystematomSPU();
-
-    bool readAllRegisters(const int readTimeoutMillis);
-
+    
+    //Get the name of the port (who am I?)
     std::string  get_portname();
 
-    SPU_DATA get_all();
+    //Get all the struct and update all (or part) of the variables
+    SPU_DATA get_all             ();
+    SPU_DATA get_all_update_NT   ();
+    SPU_DATA get_all_update_F    ();
+    SPU_DATA get_all_update_NTF  ();
+    SPU_DATA get_all_update_bool ();
 
-    float   get_N_DATA_FP();
-    float   get_T_DATA_FP();
-    float   get_F1_DATA_FP();
-    float   get_F2_DATA_FP();
-    float   get_F3_DATA_FP();
-    float   get_EMR_N_THRESHOLD();
-    float   get_WRN_N_THRESHOLD();
-    float   get_EMR_T_THRESHOLD();
-    float   get_WRN_T_THRESHOLD();
-    uint8_t get_EMR_N();
-    uint8_t get_WRN_N();
-    uint8_t get_EMR_T();
-    uint8_t get_WRN_T();
-    uint8_t get_R1();
-    uint8_t get_R2();
-    uint8_t get_R3();
-    uint8_t get_RDY();
-    uint8_t get_TEST();
-    uint8_t get_XXXX();
-    bool testMax(const int readTimeoutMillis);
-    
+    //Get just variable
+    float get_N_DATA_FP          ();
+    float get_T_DATA_FP          ();
+    float get_F1_DATA_FP         ();
+    float get_F2_DATA_FP         ();
+    float get_F3_DATA_FP         ();
+    float get_EMR_N_THRESHOLD    ();
+    float get_WRN_N_THRESHOLD    ();
+    float get_EMR_T_THRESHOLD    ();
+    float get_WRN_T_THRESHOLD    ();
+    bool  get_EMR_N              ();
+    bool  get_WRN_N              ();
+    bool  get_EMR_T              ();
+    bool  get_WRN_T              ();
+    bool  get_R1                 ();
+    bool  get_R2                 ();
+    bool  get_R3                 ();
+    bool  get_RDY                ();
+    bool  get_TEST               ();
+    bool  get_XXXX               ();    
     
 private:
     std::string portname;
     modbus_t* ctx;
     SPU_DATA spuData;
-    float conv4BytesToFloat(uint8_t data1, uint8_t data2, uint8_t data3, uint8_t data4);
     float conv2RegsToFloat(uint16_t data1, uint16_t data2);
+    float get_1_DATA_FP(int start_address);
+    uint16_t get_1_DATA(int address);
 };
 
 #endif // LIB_MODBUS_SYSTEMATOM_SPU

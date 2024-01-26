@@ -9,13 +9,13 @@ This library use libserialport, so it should be install in your system before co
 Using ArchLinux family:
 
 ```Bash
-sudo pacman -Sy libserialport
+sudo pacman -Sy libmodbus
 ```
 
 Using Debian family:
 
 ```Bash
-sudo apt update && sudo apt install libserialport-dev
+sudo apt update && sudo apt install libmodbus-dev
 ```
 
 ## Accessing serialPorts
@@ -29,7 +29,7 @@ sudo usermod -a -G uucp <your_user>
 ## Compiling just the Lib
 
 ```Bash
-g++ -c libModbusSystematomSPU.cpp -lserialport -o libModbusSystematomSPU.o
+g++ -c libModbusSystematomSPU.cpp -lmodbus -o libModbusSystematomSPU.o
 ```
 
 ## Compiling the lib with test and Running
@@ -37,19 +37,19 @@ g++ -c libModbusSystematomSPU.cpp -lserialport -o libModbusSystematomSPU.o
 For compiling:
 
 ```Bash
-g++ test.cpp libModbusSystematomSPU.cpp -lserialport -o testlibModbusSystematomSPU.elf
+g++ test.cpp libModbusSystematomSPU.cpp -lmodbus -o testlibModbusSystematomSPU.elf
 ```
 
-For run the test you should specify the <serial_port_name> <time_out> <qtd_of_reads> (time_out in milliSeconds). Example:
+For run the test you should specify the <serial_port_name> and <qtd_of_reads>. Example:
 
 ```Bash
-./testlibModbusSystematomSPU.elf /dev/ttyS0 100 10
+./testlibModbusSystematomSPU.elf /dev/ttyUSB0 10
 ```
 
 Tip: clear screen, compiling and running in just one command
 
 ```Bash
-clear ; g++ test.cpp libModbusSystematomSPU.cpp -lserialport -o testlibModbusSystematomSPU.elf && ./testlibModbusSystematomSPU.elf /dev/ttyS0 100 10
+clear ; g++ test.cpp libModbusSystematomSPU.cpp  -lmodbus -o testlibModbusSystematomSPU.elf && ./testlibModbusSystematomSPU.elf /dev/ttyUSB0 10
 ```
 
 ## License, Warranty and Copyright
