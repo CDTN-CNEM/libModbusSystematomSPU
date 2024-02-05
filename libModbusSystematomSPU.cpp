@@ -38,7 +38,7 @@ libModbusSystematomSPU::libModbusSystematomSPU(std::string portname) : portname(
 
     // Open the Modbus connection
     if (ctx == nullptr || modbus_connect(ctx) == -1) {
-        std::cerr << "Error: Failed to connect to Modbus device" << get_portname() << "Error: "<< modbus_strerror(errno) << std::endl;
+        std::cerr << "Error: Failed to connect to Modbus device: " << get_portname() << " | Error: "<< modbus_strerror(errno) << std::endl;
         libModbusSystematomSPU::~libModbusSystematomSPU();
     }
 }
