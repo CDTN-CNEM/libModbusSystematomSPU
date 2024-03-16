@@ -105,11 +105,18 @@ float libModbusSystematomSPU::conv2RegsToFloat(uint16_t data1, uint16_t data2)
 0x006D  ?
 */
 
+std::string libModbusSystematomSPU::stdErrorMsg(std::string functionName, std::string errorMsg, std::string exptionMsg)
+{
+    std::string msg = "libModbusSystematomSPU::" + functionName + " at " + get_portname() + errorMsg;
+    if (exptionMsg!="") msg += " | Code: " + exptionMsg;
+    return msg;
+}
+
 SPU_DATA libModbusSystematomSPU::get_all()
 {
     // Check if the Modbus context exists
     if (!ctx) {
-        std::cerr << "Error: Modbus context does not exist." << std::endl;
+        std::cerr << stdErrorMsg("get_all()"," Error: Modbus context does not exist to ","");
         spuData.STATE = 2;
         return spuData;
     }
@@ -122,7 +129,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
     int result = modbus_read_registers(ctx, start_address, num_registers, data);
 
     if (result == -1) {
-        std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
+        std::cerr << stdErrorMsg("get_all()","Error: Failed to read data",modbus_strerror(errno));
         spuData.STATE = 1;
         return spuData;
     }
@@ -146,7 +153,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
     result = modbus_read_registers(ctx, start_address, num_registers, data);
 
     if (result == -1) {
-        std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
+        std::cerr << stdErrorMsg("get_all()","Error: Failed to read data",modbus_strerror(errno));
         spuData.STATE = 1;
         return spuData;
     }
@@ -171,7 +178,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NT()
 {
     // Check if the Modbus context exists
     if (!ctx) {
-        std::cerr << "Error: Modbus context does not exist." << std::endl;
+        std::cerr << stdErrorMsg("get_all_update_NT()"," Error: Modbus context does not exist to ","");
         spuData.STATE = 2;
         return spuData;
     }
@@ -185,7 +192,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NT()
     int result = modbus_read_registers(ctx, start_address, num_registers, data);
 
     if (result == -1) {
-        std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
+        std::cerr << stdErrorMsg("get_all_update_NT()","Error: Failed to read data",modbus_strerror(errno));
         spuData.STATE = 1;
         return spuData;
     }
@@ -201,7 +208,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NTF()
 {
     // Check if the Modbus context exists
     if (!ctx) {
-        std::cerr << "Error: Modbus context does not exist." << std::endl;
+        std::cerr << stdErrorMsg("get_all_update_NTF()"," Error: Modbus context does not exist to ","");
         spuData.STATE = 2;
         return spuData;
     }
@@ -215,7 +222,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NTF()
     int result = modbus_read_registers(ctx, start_address, num_registers, data);
 
     if (result == -1) {
-        std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
+        std::cerr << stdErrorMsg("get_all_update_NTF()","Error: Failed to read data",modbus_strerror(errno));
         spuData.STATE = 1;
         return spuData;
     }
@@ -234,7 +241,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
 {
     // Check if the Modbus context exists
     if (!ctx) {
-        std::cerr << "Error: Modbus context does not exist." << std::endl;
+        std::cerr << stdErrorMsg("get_all_update_F()"," Error: Modbus context does not exist to ","");
         spuData.STATE = 2;
         return spuData;
     }
@@ -248,7 +255,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     int result = modbus_read_registers(ctx, start_address, num_registers, data);
 
     if (result == -1) {
-        std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
+        std::cerr << stdErrorMsg("get_all_update_F()","Error: Failed to read data",modbus_strerror(errno));
         spuData.STATE = 1;
         return spuData;
     }
@@ -265,7 +272,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
  {
     // Check if the Modbus context exists
     if (!ctx) {
-        std::cerr << "Error: Modbus context does not exist." << std::endl;
+        std::cerr << stdErrorMsg("get_all_update_bool()"," Error: Modbus context does not exist to ","");
         spuData.STATE = 2;
         return spuData;
     }
@@ -279,7 +286,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     int result = modbus_read_registers(ctx, start_address, num_registers, data);
 
     if (result == -1) {
-        std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
+        std::cerr << stdErrorMsg("get_all_update_bool()","Error: Failed to read data",modbus_strerror(errno));
         spuData.STATE = 1;
         return spuData;
     }
@@ -303,7 +310,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
 float libModbusSystematomSPU::get_1_DATA_FP(int start_address)
 {
     if (!ctx) {
-        std::cerr << "Error: Modbus context does not exist." << std::endl;
+        std::cerr << stdErrorMsg("get_1_DATA_FP()"," Error: Modbus context does not exist to ","");
         return -1;
     }
     int num_registers = 0x02; // Number of registers to read
@@ -311,7 +318,7 @@ float libModbusSystematomSPU::get_1_DATA_FP(int start_address)
     uint16_t data[dataSize];
     int result = modbus_read_registers(ctx, start_address, num_registers, data);
     if (result == -1) {
-        std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
+        std::cerr << stdErrorMsg("get_1_DATA_FP()","Error: Failed to read data",modbus_strerror(errno));
         return -1;
     }
     return conv2RegsToFloat(data[ 0], data[ 1]);
@@ -320,13 +327,13 @@ float libModbusSystematomSPU::get_1_DATA_FP(int start_address)
 uint16_t libModbusSystematomSPU::get_1_DATA(int address)
 {
     if (!ctx) {
-        std::cerr << "Error: Modbus context does not exist." << std::endl;
+        std::cerr << stdErrorMsg("get_1_DATA()"," Error: Modbus context does not exist to ","");
         return -1;
     }
     uint16_t data[1];
     int result = modbus_read_registers(ctx, address, 0x01, data);
     if (result == -1) {
-        std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
+        std::cerr << stdErrorMsg("get_1_DATA()","Error: Failed to read data",modbus_strerror(errno));
         return -1;
     }
     return *data;
