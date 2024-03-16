@@ -102,7 +102,7 @@ private:
     float conv2RegsToFloat(uint16_t data1, uint16_t data2);
     float get_1_DATA_FP(int start_address);
     uint16_t get_1_DATA(int address);
-    std::string libModbusSystematomSPU::stdErrorMsg(std::string functionName, std::string errorMsg, std::string exptionMsg);
+    std::string stdErrorMsg(std::string functionName, std::string errorMsg, std::string exptionMsg);
 };
 
 #endif // LIB_MODBUS_SYSTEMATOM_SPU
