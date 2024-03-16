@@ -115,6 +115,7 @@ std::string libModbusSystematomSPU::stdErrorMsg(std::string functionName, std::s
         msg +=          "\n\tError code: " + 
                         exptionMsg;
     }
+    msg += "\n";
     return msg;
 }
 
