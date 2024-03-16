@@ -23,7 +23,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <modbus/modbus-rtu.h>
 #include <modbus/modbus.h>
 
-//#include <libserialport.h>
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
@@ -31,26 +30,30 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 struct SPU_DATA
 {
-    bool    READ            = 0;
-    float   N_DATA_FP       = 0;
-    float   T_DATA_FP       = 0;
-    float   F1_DATA_FP      = 0;
-    float   F2_DATA_FP      = 0;
-    float   F3_DATA_FP      = 0;
-    float   EMR_N_THRESHOLD = 0;
-    float   WRN_N_THRESHOLD = 0;
-    float   EMR_T_THRESHOLD = 0;
-    float   WRN_T_THRESHOLD = 0;
-    bool    EMR_N           = 0;
-    bool    WRN_N           = 0;
-    bool    EMR_T           = 0;
-    bool    WRN_T           = 0;
-    bool    R1              = 0;
-    bool    R2              = 0;
-    bool    R3              = 0;
-    bool    RDY             = 0;
-    bool    TEST            = 0;
-    bool    XXXX            = 0;
+    int   STATE             = -1;   //Status da SPU:
+                                    //-1 = Nenhuma tentativa de conexão realizada ainda.
+                                    // 0 = Valores lidos com sucesso.
+                                    // 1 = Erro ao ler dados.
+                                    // 2 = Erro de contexto modbus.
+    float   N_DATA_FP       = -1;
+    float   T_DATA_FP       = -1;
+    float   F1_DATA_FP      = -1;
+    float   F2_DATA_FP      = -1;
+    float   F3_DATA_FP      = -1;
+    float   EMR_N_THRESHOLD = -1;
+    float   WRN_N_THRESHOLD = -1;
+    float   EMR_T_THRESHOLD = -1;
+    float   WRN_T_THRESHOLD = -1;
+    bool    EMR_N           =  0;
+    bool    WRN_N           =  0;
+    bool    EMR_T           =  0;
+    bool    WRN_T           =  0;
+    bool    R1              =  0;
+    bool    R2              =  0;
+    bool    R3              =  0;
+    bool    RDY             =  0;
+    bool    TEST            =  0;
+    bool    XXXX            =  0;
 };
 
 

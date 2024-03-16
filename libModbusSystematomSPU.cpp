@@ -110,7 +110,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
     // Check if the Modbus context exists
     if (!ctx) {
         std::cerr << "Error: Modbus context does not exist." << std::endl;
-        spuData.READ = false;
+        spuData.STATE = 2;
         return spuData;
     }
 
@@ -123,7 +123,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
 
     if (result == -1) {
         std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
-        spuData.READ = false;
+        spuData.STATE = 1;
         return spuData;
     }
 
@@ -147,7 +147,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
 
     if (result == -1) {
         std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
-        spuData.READ = false;
+        spuData.STATE = 1;
         return spuData;
     }
 
@@ -163,7 +163,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
     spuData.TEST            = data[8];
     spuData.XXXX            = data[9];
 
-    spuData.READ            = true;
+    spuData.STATE            = true;
     return spuData;
 }
 
@@ -172,7 +172,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NT()
     // Check if the Modbus context exists
     if (!ctx) {
         std::cerr << "Error: Modbus context does not exist." << std::endl;
-        spuData.READ = false;
+        spuData.STATE = 2;
         return spuData;
     }
 
@@ -186,12 +186,12 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NT()
 
     if (result == -1) {
         std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
-        spuData.READ = false;
+        spuData.STATE = 1;
         return spuData;
     }
 
     // Convert data in floats variables
-    spuData.READ            = true;
+    spuData.STATE            = true;
     spuData.N_DATA_FP       = conv2RegsToFloat(data[ 0], data[ 1]);
     spuData.T_DATA_FP       = conv2RegsToFloat(data[ 2], data[ 3]);
     return spuData;
@@ -202,7 +202,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NTF()
     // Check if the Modbus context exists
     if (!ctx) {
         std::cerr << "Error: Modbus context does not exist." << std::endl;
-        spuData.READ = false;
+        spuData.STATE = 2;
         return spuData;
     }
 
@@ -216,12 +216,12 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NTF()
 
     if (result == -1) {
         std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
-        spuData.READ = false;
+        spuData.STATE = 1;
         return spuData;
     }
 
     // Convert data in floats variables
-    spuData.READ            = true;
+    spuData.STATE            = true;
     spuData.N_DATA_FP       = conv2RegsToFloat(data[ 0], data[ 1]);
     spuData.T_DATA_FP       = conv2RegsToFloat(data[ 2], data[ 3]);
     spuData.F1_DATA_FP      = conv2RegsToFloat(data[ 4], data[ 5]);
@@ -235,7 +235,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     // Check if the Modbus context exists
     if (!ctx) {
         std::cerr << "Error: Modbus context does not exist." << std::endl;
-        spuData.READ = false;
+        spuData.STATE = 2;
         return spuData;
     }
 
@@ -249,12 +249,12 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
 
     if (result == -1) {
         std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
-        spuData.READ = false;
+        spuData.STATE = 1;
         return spuData;
     }
 
     // Convert data in floats variables
-    spuData.READ            = true;
+    spuData.STATE            = true;
     spuData.F1_DATA_FP      = conv2RegsToFloat(data[ 4], data[ 5]);
     spuData.F2_DATA_FP      = conv2RegsToFloat(data[ 6], data[ 7]);
     spuData.F3_DATA_FP      = conv2RegsToFloat(data[ 8], data[ 9]);
@@ -266,7 +266,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     // Check if the Modbus context exists
     if (!ctx) {
         std::cerr << "Error: Modbus context does not exist." << std::endl;
-        spuData.READ = false;
+        spuData.STATE = 2;
         return spuData;
     }
 
@@ -280,12 +280,12 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
 
     if (result == -1) {
         std::cerr << "Error: Failed to read data - " << modbus_strerror(errno) << std::endl;
-        spuData.READ = false;
+        spuData.STATE = 1;
         return spuData;
     }
 
     // Convert data in floats variables
-    spuData.READ            = true;
+    spuData.STATE            = true;
     spuData.EMR_N           = data[0];
     spuData.WRN_N           = data[1];
     spuData.EMR_T           = data[2];
