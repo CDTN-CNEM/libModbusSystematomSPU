@@ -28,6 +28,20 @@ void libModbusSystematomSPU_license()
     std::cout << "that came together with the library." << std::endl << std::endl;
 }
 
+bool libModbusSystematomSPU::tryConnect()
+{
+    if (ctx == nullptr || modbus_connect(ctx) == -1) 
+    {
+        std::cerr << stdErrorMsg("tryConnect()","Failed to connect to Modbus device:", modbus_strerror(errno));
+        return 1;
+    }
+    else
+    {
+        std::cout << "Connection successful to: " << get_portname() << std::endl;
+        return 0;
+    } 
+}
+
 libModbusSystematomSPU::libModbusSystematomSPU(std::string portname) : portname(portname.c_str())//, port(nullptr)
 {
     // Create a new Modbus context
@@ -37,8 +51,7 @@ libModbusSystematomSPU::libModbusSystematomSPU(std::string portname) : portname(
     modbus_set_slave(ctx, 0x01);
 
     // Open the Modbus connection
-    if (ctx == nullptr || modbus_connect(ctx) == -1) std::cerr << stdErrorMsg("libModbusSystematomSPU()","Failed to connect to Modbus device:",modbus_strerror(errno));
-    else std::cout << "Connection successful to: " << get_portname() << std::endl;
+    tryConnect();
 }
 
 libModbusSystematomSPU::~libModbusSystematomSPU() {

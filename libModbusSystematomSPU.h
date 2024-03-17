@@ -63,6 +63,8 @@ class libModbusSystematomSPU {
 public:
     libModbusSystematomSPU(std::string portname);
     ~libModbusSystematomSPU();
+
+    bool tryConnect();
     
     //Get the name of the port (who am I?)
     std::string  get_portname();
