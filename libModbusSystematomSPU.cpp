@@ -139,7 +139,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
 {
     // Check if the Modbus context exists
     if (!ctx || flagNotConnected) {
-        std::cerr << stdErrorMsg("get_all()"," Modbus context does not exist to ",modbus_strerror(errno));
+        std::cerr << stdErrorMsg("get_all()","Modbus context does not exist","");
         spuData.STATE = 2;
         return spuData;
     }
@@ -201,7 +201,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NT()
 {
     // Check if the Modbus context exists
     if (!ctx || flagNotConnected) {
-        std::cerr << stdErrorMsg("get_all_update_NT()"," Modbus context does not exist to ","");
+        std::cerr << stdErrorMsg("get_all_update_NT()","Modbus context does not exist","");
         spuData.STATE = 2;
         return spuData;
     }
@@ -231,7 +231,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NTF()
 {
     // Check if the Modbus context exists
     if (!ctx || flagNotConnected) {
-        std::cerr << stdErrorMsg("get_all_update_NTF()"," Modbus context does not exist to ","");
+        std::cerr << stdErrorMsg("get_all_update_NTF()","Modbus context does not exist","");
         spuData.STATE = 2;
         return spuData;
     }
@@ -264,7 +264,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
 {
     // Check if the Modbus context exists
     if (!ctx || flagNotConnected) {
-        std::cerr << stdErrorMsg("get_all_update_F()"," Modbus context does not exist to ","");
+        std::cerr << stdErrorMsg("get_all_update_F()","Modbus context does not exist","");
         spuData.STATE = 2;
         return spuData;
     }
@@ -295,7 +295,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
  {
     // Check if the Modbus context exists
     if (!ctx || flagNotConnected) {
-        std::cerr << stdErrorMsg("get_all_update_bool()"," Modbus context does not exist to ","");
+        std::cerr << stdErrorMsg("get_all_update_bool()","Modbus context does not exist","");
         spuData.STATE = 2;
         return spuData;
     }
@@ -333,7 +333,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
 float libModbusSystematomSPU::get_1_DATA_FP(int start_address)
 {
     if (!ctx || flagNotConnected) {
-        std::cerr << stdErrorMsg("get_1_DATA_FP()"," Modbus context does not exist to ","");
+        std::cerr << stdErrorMsg("get_1_DATA_FP()","Modbus context does not exist","");
         return -1;
     }
     int num_registers = 0x02; // Number of registers to read
@@ -350,7 +350,7 @@ float libModbusSystematomSPU::get_1_DATA_FP(int start_address)
 uint16_t libModbusSystematomSPU::get_1_DATA(int address)
 {
     if (!ctx || flagNotConnected) {
-        std::cerr << stdErrorMsg("get_1_DATA()"," Modbus context does not exist to ","");
+        std::cerr << stdErrorMsg("get_1_DATA()","Modbus context does not exist","");
         return -1;
     }
     uint16_t data[1];
