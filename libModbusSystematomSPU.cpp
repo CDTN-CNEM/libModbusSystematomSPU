@@ -30,9 +30,17 @@ void libModbusSystematomSPU_license()
 
 bool libModbusSystematomSPU::tryConnect()
 {
+    // Create a new Modbus context
+    ctx = modbus_new_rtu(portname.c_str(), 57600, 'N', 8, 1);
+
+    // Set the slave address
+    modbus_set_slave(ctx, 0x01);
+
     if (ctx == nullptr || modbus_connect(ctx) == -1) 
     {
         std::cerr << stdErrorMsg("tryConnect()","Failed to connect to Modbus device:", modbus_strerror(errno));
+        modbus_close(ctx);
+        modbus_free(ctx);
         return 1;
     }
     else
@@ -44,13 +52,6 @@ bool libModbusSystematomSPU::tryConnect()
 
 libModbusSystematomSPU::libModbusSystematomSPU(std::string portname) : portname(portname.c_str())//, port(nullptr)
 {
-    // Create a new Modbus context
-    ctx = modbus_new_rtu(portname.c_str(), 57600, 'N', 8, 1);
-
-    // Set the slave address
-    modbus_set_slave(ctx, 0x01);
-
-    // Open the Modbus connection
     tryConnect();
 }
 
@@ -136,7 +137,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
 {
     // Check if the Modbus context exists
     if (!ctx) {
-        std::cerr << stdErrorMsg("get_all()"," Modbus context does not exist to ","");
+        std::cerr << stdErrorMsg("get_all()"," Modbus context does not exist to ",modbus_strerror(errno));
         spuData.STATE = 2;
         return spuData;
     }
