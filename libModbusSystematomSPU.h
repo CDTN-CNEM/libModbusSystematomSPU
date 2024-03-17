@@ -105,6 +105,10 @@ private:
     float get_1_DATA_FP(int start_address);
     uint16_t get_1_DATA(int address);
     std::string stdErrorMsg(std::string functionName, std::string errorMsg, std::string exptionMsg);
+
+    bool flagNotConnected;//Devido a um erro na biblioteca ModBus na função modbus_free() que causa falha
+    //de segmentação, fez-se necessário criar essa flag para as funções da categoria get_data...() consigam
+    //saber que o dispositivo não existe para emitir STATE 2 (desconectado)
 };
 
 #endif // LIB_MODBUS_SYSTEMATOM_SPU

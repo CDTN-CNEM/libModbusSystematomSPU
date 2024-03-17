@@ -40,12 +40,14 @@ bool libModbusSystematomSPU::tryConnect()
     {
         std::cerr << stdErrorMsg("tryConnect()","Failed to connect to Modbus device:", modbus_strerror(errno));
         modbus_close(ctx);
-        modbus_free(ctx);
+        //modbus_free(ctx); //Bug na biblioteca causa falha de segmentação
+        flagNotConnected=1;
         return 1;
     }
     else
     {
         std::cout << "Connection successful to: " << get_portname() << std::endl;
+        flagNotConnected=0;
         return 0;
     } 
 }
@@ -59,7 +61,7 @@ libModbusSystematomSPU::~libModbusSystematomSPU() {
     // Close the Modbus connection
     if (ctx) {
         modbus_close(ctx);
-        modbus_free(ctx);
+        //modbus_free(ctx); //Bug na biblioteca causa falha de segmentação
     }
 }
 
@@ -136,7 +138,7 @@ std::string libModbusSystematomSPU::stdErrorMsg(std::string functionName, std::s
 SPU_DATA libModbusSystematomSPU::get_all()
 {
     // Check if the Modbus context exists
-    if (!ctx) {
+    if (!ctx || flagNotConnected) {
         std::cerr << stdErrorMsg("get_all()"," Modbus context does not exist to ",modbus_strerror(errno));
         spuData.STATE = 2;
         return spuData;
@@ -198,7 +200,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
 SPU_DATA libModbusSystematomSPU::get_all_update_NT()
 {
     // Check if the Modbus context exists
-    if (!ctx) {
+    if (!ctx || flagNotConnected) {
         std::cerr << stdErrorMsg("get_all_update_NT()"," Modbus context does not exist to ","");
         spuData.STATE = 2;
         return spuData;
@@ -228,7 +230,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NT()
 SPU_DATA libModbusSystematomSPU::get_all_update_NTF()
 {
     // Check if the Modbus context exists
-    if (!ctx) {
+    if (!ctx || flagNotConnected) {
         std::cerr << stdErrorMsg("get_all_update_NTF()"," Modbus context does not exist to ","");
         spuData.STATE = 2;
         return spuData;
@@ -261,7 +263,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NTF()
 SPU_DATA libModbusSystematomSPU::get_all_update_F()
 {
     // Check if the Modbus context exists
-    if (!ctx) {
+    if (!ctx || flagNotConnected) {
         std::cerr << stdErrorMsg("get_all_update_F()"," Modbus context does not exist to ","");
         spuData.STATE = 2;
         return spuData;
@@ -292,7 +294,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
  SPU_DATA libModbusSystematomSPU::get_all_update_bool ()
  {
     // Check if the Modbus context exists
-    if (!ctx) {
+    if (!ctx || flagNotConnected) {
         std::cerr << stdErrorMsg("get_all_update_bool()"," Modbus context does not exist to ","");
         spuData.STATE = 2;
         return spuData;
@@ -330,7 +332,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
 
 float libModbusSystematomSPU::get_1_DATA_FP(int start_address)
 {
-    if (!ctx) {
+    if (!ctx || flagNotConnected) {
         std::cerr << stdErrorMsg("get_1_DATA_FP()"," Modbus context does not exist to ","");
         return -1;
     }
@@ -347,7 +349,7 @@ float libModbusSystematomSPU::get_1_DATA_FP(int start_address)
 
 uint16_t libModbusSystematomSPU::get_1_DATA(int address)
 {
-    if (!ctx) {
+    if (!ctx || flagNotConnected) {
         std::cerr << stdErrorMsg("get_1_DATA()"," Modbus context does not exist to ","");
         return -1;
     }
