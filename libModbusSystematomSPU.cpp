@@ -193,7 +193,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
     spuData.TEST            = data[8];
     spuData.XXXX            = data[9];
 
-    spuData.STATE            = true;
+    spuData.STATE           = 0;
     return spuData;
 }
 
@@ -221,9 +221,9 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NT()
     }
 
     // Convert data in floats variables
-    spuData.STATE            = true;
     spuData.N_DATA_FP       = conv2RegsToFloat(data[ 0], data[ 1]);
     spuData.T_DATA_FP       = conv2RegsToFloat(data[ 2], data[ 3]);
+    spuData.STATE           = 0;
     return spuData;
 }
 
@@ -251,12 +251,12 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NTF()
     }
 
     // Convert data in floats variables
-    spuData.STATE            = true;
     spuData.N_DATA_FP       = conv2RegsToFloat(data[ 0], data[ 1]);
     spuData.T_DATA_FP       = conv2RegsToFloat(data[ 2], data[ 3]);
     spuData.F1_DATA_FP      = conv2RegsToFloat(data[ 4], data[ 5]);
     spuData.F2_DATA_FP      = conv2RegsToFloat(data[ 6], data[ 7]);
     spuData.F3_DATA_FP      = conv2RegsToFloat(data[ 8], data[ 9]);
+    spuData.STATE           = 0;
     return spuData;
 }
 
@@ -284,10 +284,10 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     }
 
     // Convert data in floats variables
-    spuData.STATE            = true;
     spuData.F1_DATA_FP      = conv2RegsToFloat(data[ 4], data[ 5]);
     spuData.F2_DATA_FP      = conv2RegsToFloat(data[ 6], data[ 7]);
     spuData.F3_DATA_FP      = conv2RegsToFloat(data[ 8], data[ 9]);
+    spuData.STATE           = 0;
     return spuData;
 }
 
@@ -315,7 +315,6 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     }
 
     // Convert data in floats variables
-    spuData.STATE            = true;
     spuData.EMR_N           = data[0];
     spuData.WRN_N           = data[1];
     spuData.EMR_T           = data[2];
@@ -326,6 +325,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     spuData.RDY             = data[7];
     spuData.TEST            = data[8];
     spuData.XXXX            = data[9];
+    spuData.STATE           = 0;
     return spuData;
  }
 
