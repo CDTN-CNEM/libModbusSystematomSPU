@@ -34,7 +34,7 @@ struct SPU_DATA
                                     //-1 = Nenhuma tentativa de conexão realizada ainda.
                                     // 0 = Valores lidos com sucesso.
                                     // 1 = Erro ao ler dados.
-                                    // 2 = Erro de contexto modbus.
+                                    // 2 = Erro de contexto modbus (provavelmente não existe dispositivo USB).
     float   N_DATA_FP       = -1;
     float   T_DATA_FP       = -1;
     float   F1_DATA_FP      = -1;
@@ -44,16 +44,16 @@ struct SPU_DATA
     float   WRN_N_THRESHOLD = -1;
     float   EMR_T_THRESHOLD = -1;
     float   WRN_T_THRESHOLD = -1;
-    bool    EMR_N           =  0;
-    bool    WRN_N           =  0;
-    bool    EMR_T           =  0;
-    bool    WRN_T           =  0;
-    bool    R1              =  0;
-    bool    R2              =  0;
-    bool    R3              =  0;
-    bool    RDY             =  0;
-    bool    TEST            =  0;
-    bool    XXXX            =  0;
+    int     EMR_N           = -1;
+    int     WRN_N           = -1;
+    int     EMR_T           = -1;
+    int     WRN_T           = -1;
+    int     R1              = -1;
+    int     R2              = -1;
+    int     R3              = -1;
+    int     RDY             = -1;
+    int     TEST            = -1;
+    int     XXXX            = -1;
 };
 
 
