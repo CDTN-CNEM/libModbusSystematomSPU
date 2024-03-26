@@ -1,0 +1,4 @@
+set(LibModbusSystematomSPU_INCLUDE_DIRS "@LibModbusSystematomSPU_INCLUDE_DIRS@")
+set(LibModbusSystematomSPU_LIBRARIES "@LibModbusSystematomSPU_LIBRARIES@")
+set(LibModbusSystematomSPU_CFLAGS "@CMAKE_C_FLAGS@")
+set(LibModbusSystematomSPU_CXXFLAGS "@CMAKE_CXX_FLAGS@")

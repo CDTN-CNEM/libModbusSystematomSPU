@@ -23,7 +23,7 @@ set(CMAKE_C_STANDARD_INCLUDE_DIRECTORIES
 
 set(LIBMODBUSSYSTEMATOMSPU_SRC src/libModbusSystematomSPU.cpp)
 
-add_library(modbusSystematomSPU ${LIBMODBUSSYSTEMATOMSPU_SRC})
+add_library(modbusSystematomSPU STATIC ${LIBMODBUSSYSTEMATOMSPU_SRC})
 add_library(modbusSystematomSPU::modbusSystematomSPU ALIAS modbusSystematomSPU)
 
 target_include_directories(
@@ -45,3 +45,15 @@ install(
   RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
 install(TARGETS test RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+set(LibModbusSystematomSPU_INCLUDE_DIRS
+    ${CMAKE_INSTALL_PREFIX}/include/libModbusSystematomSPU)
+set(LibModbusSystematomSPU_LIBRARIES
+    ${CMAKE_INSTALL_PREFIX}/lib/libmodbusSystematomSPU.a)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/resources/LibModbusSystematomSPUConfig.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/resources/LibModbusSystematomSPUConfig.cmake
+  @ONLY)
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/resources/LibModbusSystematomSPUConfig.cmake
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/LibModbusSystematomSPU)
