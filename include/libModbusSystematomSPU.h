@@ -17,11 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef LIB_MODBUS_SYSTEMATOM_SPU
-#define LIB_MODBUS_SYSTEMATOM_SPU
-
-#include <modbus/modbus-rtu.h>
-#include <modbus/modbus.h>
+#pragma once
 
 #include <iostream>
 #include <cstring>
@@ -58,6 +54,8 @@ struct SPU_DATA
 
 
 void libModbusSystematomSPU_license();
+
+struct libModbusSystematomSPU_private;
 
 class libModbusSystematomSPU {
 public:
@@ -98,17 +96,10 @@ public:
     bool  get_XXXX               ();    
     
 private:
-    std::string portname;
-    modbus_t* ctx;
-    SPU_DATA spuData;
+    libModbusSystematomSPU_private* _p;
+
+    std::string stdErrorMsg(std::string functionName, std::string errorMsg, std::string exptionMsg);
     float conv2RegsToFloat(uint16_t data1, uint16_t data2);
     float get_1_DATA_FP(int start_address);
     uint16_t get_1_DATA(int address);
-    std::string stdErrorMsg(std::string functionName, std::string errorMsg, std::string exptionMsg);
-
-    bool flagNotConnected;//Devido a um erro na biblioteca ModBus na função modbus_free() que causa falha
-    //de segmentação, fez-se necessário criar essa flag para as funções da categoria get_data...() consigam
-    //saber que o dispositivo não existe para emitir STATE 2 (desconectado)
 };
-
-#endif // LIB_MODBUS_SYSTEMATOM_SPU
