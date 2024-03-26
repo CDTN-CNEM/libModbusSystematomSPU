@@ -26,14 +26,11 @@ set(LIBMODBUSSYSTEMATOMSPU_SRC src/libModbusSystematomSPU.cpp)
 add_library(modbusSystematomSPU STATIC ${LIBMODBUSSYSTEMATOMSPU_SRC})
 add_library(modbusSystematomSPU::modbusSystematomSPU ALIAS modbusSystematomSPU)
 
-target_include_directories(
-  modbusSystematomSPU PUBLIC ${PROJECT_SOURCE_DIR}/include
-                             ${MODBUS_INCLUDE_DIRS})
+target_include_directories(modbusSystematomSPU
+                           PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(modbusSystematomSPU PUBLIC PkgConfig::Modbus)
-target_compile_options(modbusSystematomSPU PUBLIC ${MODBUS_CFLAGS_OTHER})
 
 add_executable(modbussystematomspu-test src/test.cpp)
-target_include_directories(modbussystematomspu-test PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(modbussystematomspu-test PRIVATE modbusSystematomSPU)
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/
@@ -44,7 +41,8 @@ install(
   ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
   RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
-install(TARGETS modbussystematomspu-test RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+install(TARGETS modbussystematomspu-test
+        RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
 set(LibModbusSystematomSPU_INCLUDE_DIRS
     ${CMAKE_INSTALL_PREFIX}/include/libModbusSystematomSPU)
