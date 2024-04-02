@@ -155,6 +155,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
     if (!this->_p->ctx || this->_p->flagNotConnected) {
         std::cerr << stdErrorMsg("get_all()","Modbus context does not exist","");
         this->_p->spuData.STATE = 2;
+        this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
     }
 
@@ -168,6 +169,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
     if (result == -1) {
         std::cerr << stdErrorMsg("get_all()","Failed to read data",modbus_strerror(errno));
         this->_p->spuData.STATE = 1;
+        this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
     }
 
@@ -192,6 +194,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
     if (result == -1) {
         std::cerr << stdErrorMsg("get_all()","Failed to read data",modbus_strerror(errno));
         this->_p->spuData.STATE = 1;
+        this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
     }
 
@@ -208,6 +211,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
     this->_p->spuData.XXXX            = data[9];
 
     this->_p->spuData.STATE           = 0;
+    this->_p->spuData.TIME = std::chrono::system_clock::now();
     return this->_p->spuData;
 }
 
@@ -217,6 +221,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NT()
     if (!this->_p->ctx || this->_p->flagNotConnected) {
         std::cerr << stdErrorMsg("get_all_update_NT()","Modbus context does not exist","");
         this->_p->spuData.STATE = 2;
+        this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
     }
 
@@ -231,6 +236,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NT()
     if (result == -1) {
         std::cerr << stdErrorMsg("get_all_update_NT()","Failed to read data",modbus_strerror(errno));
         this->_p->spuData.STATE = 1;
+        this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
     }
 
@@ -238,6 +244,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NT()
     this->_p->spuData.N_DATA_FP       = conv2RegsToFloat(data[ 0], data[ 1]);
     this->_p->spuData.T_DATA_FP       = conv2RegsToFloat(data[ 2], data[ 3]);
     this->_p->spuData.STATE           = 0;
+    this->_p->spuData.TIME = std::chrono::system_clock::now();
     return this->_p->spuData;
 }
 
@@ -247,6 +254,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NTF()
     if (!this->_p->ctx || this->_p->flagNotConnected) {
         std::cerr << stdErrorMsg("get_all_update_NTF()","Modbus context does not exist","");
         this->_p->spuData.STATE = 2;
+        this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
     }
 
@@ -261,6 +269,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NTF()
     if (result == -1) {
         std::cerr << stdErrorMsg("get_all_update_NTF()","Failed to read data",modbus_strerror(errno));
         this->_p->spuData.STATE = 1;
+        this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
     }
 
@@ -271,6 +280,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NTF()
     this->_p->spuData.F2_DATA_FP      = conv2RegsToFloat(data[ 6], data[ 7]);
     this->_p->spuData.F3_DATA_FP      = conv2RegsToFloat(data[ 8], data[ 9]);
     this->_p->spuData.STATE           = 0;
+    this->_p->spuData.TIME = std::chrono::system_clock::now();
     return this->_p->spuData;
 }
 
@@ -280,6 +290,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     if (!this->_p->ctx || this->_p->flagNotConnected) {
         std::cerr << stdErrorMsg("get_all_update_F()","Modbus context does not exist","");
         this->_p->spuData.STATE = 2;
+        this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
     }
 
@@ -294,6 +305,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     if (result == -1) {
         std::cerr << stdErrorMsg("get_all_update_F()","Failed to read data",modbus_strerror(errno));
         this->_p->spuData.STATE = 1;
+        this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
     }
 
@@ -302,6 +314,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     this->_p->spuData.F2_DATA_FP      = conv2RegsToFloat(data[ 6], data[ 7]);
     this->_p->spuData.F3_DATA_FP      = conv2RegsToFloat(data[ 8], data[ 9]);
     this->_p->spuData.STATE           = 0;
+    this->_p->spuData.TIME = std::chrono::system_clock::now();
     return this->_p->spuData;
 }
 
@@ -311,6 +324,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     if (!this->_p->ctx || this->_p->flagNotConnected) {
         std::cerr << stdErrorMsg("get_all_update_bool()","Modbus context does not exist","");
         this->_p->spuData.STATE = 2;
+        this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
     }
 
@@ -325,6 +339,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     if (result == -1) {
         std::cerr << stdErrorMsg("get_all_update_bool()","Failed to read data",modbus_strerror(errno));
         this->_p->spuData.STATE = 1;
+        this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
     }
 
@@ -340,6 +355,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
     this->_p->spuData.TEST            = data[8];
     this->_p->spuData.XXXX            = data[9];
     this->_p->spuData.STATE           = 0;
+    this->_p->spuData.TIME = std::chrono::system_clock::now();
     return this->_p->spuData;
  }
 

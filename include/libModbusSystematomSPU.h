@@ -23,6 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include <cstring>
 #include <cstdlib>
 #include <cstdint>
+#include <chrono>
 
 struct SPU_DATA
 {
@@ -31,6 +32,7 @@ struct SPU_DATA
                                     // 0 = Valores lidos com sucesso.
                                     // 1 = Erro ao ler dados.
                                     // 2 = Erro de contexto modbus (provavelmente não existe dispositivo USB).
+    std::chrono::system_clock::time_point TIME;
     float   N_DATA_FP       = -1;
     float   T_DATA_FP       = -1;
     float   F1_DATA_FP      = -1;
