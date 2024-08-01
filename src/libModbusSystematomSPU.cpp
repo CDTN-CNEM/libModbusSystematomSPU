@@ -42,6 +42,9 @@ void libModbusSystematomSPU_license()
 
 bool libModbusSystematomSPU::tryConnect()
 {
+    //Se existir ctx feche a conexão
+    if(this->_p->ctx) modbus_close(this->_p->ctx);
+
     // Create a new Modbus context
     this->_p->ctx = modbus_new_rtu(this->_p->portname.c_str(), 57600, 'N', 8, 1);
 
