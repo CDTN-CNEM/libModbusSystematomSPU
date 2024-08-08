@@ -160,7 +160,7 @@ SPU_DATA libModbusSystematomSPU::get_all()
 {
     // Check if the Modbus context exists
     if (!this->_p->ctx || this->_p->flagNotConnected) {
-        std::cerr << stdErrorMsg("get_all()","Modbus context: " + std::to_string(reinterpret_cast<std::uintptr_t>(this->_p->ctx)) + "  | flagConnected: " + std::to_string(!this->_p->flagNotConnected),"");
+        std::cerr << stdErrorMsg("get_all()","Modbus context does not exist","");
         this->_p->spuData.STATE = 2;
         this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
@@ -226,7 +226,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NT()
 {
     // Check if the Modbus context exists
     if (!this->_p->ctx || this->_p->flagNotConnected) {
-        std::cerr << stdErrorMsg("get_all()","Modbus context: " + std::to_string(reinterpret_cast<std::uintptr_t>(this->_p->ctx)) + "  | flagConnected: " + std::to_string(!this->_p->flagNotConnected),"");
+        std::cerr << stdErrorMsg("get_all_update_NT()","Modbus context does not exist","");
         this->_p->spuData.STATE = 2;
         this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
@@ -259,7 +259,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_NTF()
 {
     // Check if the Modbus context exists
     if (!this->_p->ctx || this->_p->flagNotConnected) {
-        std::cerr << stdErrorMsg("get_all()","Modbus context: " + std::to_string(reinterpret_cast<std::uintptr_t>(this->_p->ctx)) + "  | flagConnected: " + std::to_string(!this->_p->flagNotConnected),"");
+        std::cerr << stdErrorMsg("get_all_update_NTF()","Modbus context does not exist","");
         this->_p->spuData.STATE = 2;
         this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
@@ -295,7 +295,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
 {
     // Check if the Modbus context exists
     if (!this->_p->ctx || this->_p->flagNotConnected) {
-        std::cerr << stdErrorMsg("get_all()","Modbus context: " + std::to_string(reinterpret_cast<std::uintptr_t>(this->_p->ctx)) + "  | flagConnected: " + std::to_string(!this->_p->flagNotConnected),"");
+        std::cerr << stdErrorMsg("get_all_update_F()","Modbus context does not exist","");
         this->_p->spuData.STATE = 2;
         this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
@@ -329,7 +329,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
  {
     // Check if the Modbus context exists
     if (!this->_p->ctx || this->_p->flagNotConnected) {
-        std::cerr << stdErrorMsg("get_all()","Modbus context: " + std::to_string(reinterpret_cast<std::uintptr_t>(this->_p->ctx)) + "  | flagConnected: " + std::to_string(!this->_p->flagNotConnected),"");
+        std::cerr << stdErrorMsg("get_all_update_bool()","Modbus context does not exist","");
         this->_p->spuData.STATE = 2;
         this->_p->spuData.TIME = std::chrono::system_clock::now();
         return this->_p->spuData;
@@ -370,7 +370,7 @@ SPU_DATA libModbusSystematomSPU::get_all_update_F()
 float libModbusSystematomSPU::get_1_DATA_FP(int start_address)
 {
     if (!this->_p->ctx || this->_p->flagNotConnected) {
-        std::cerr << stdErrorMsg("get_all()","Modbus context: " + std::to_string(reinterpret_cast<std::uintptr_t>(this->_p->ctx)) + "  | flagConnected: " + std::to_string(!this->_p->flagNotConnected),"");
+        std::cerr << stdErrorMsg("get_1_DATA_FP()","Modbus context does not exist","");
         return -1;
     }
     int num_registers = 0x02; // Number of registers to read
@@ -387,7 +387,7 @@ float libModbusSystematomSPU::get_1_DATA_FP(int start_address)
 uint16_t libModbusSystematomSPU::get_1_DATA(int address)
 {
     if (!this->_p->ctx || this->_p->flagNotConnected) {
-        std::cerr << stdErrorMsg("get_all()","Modbus context: " + std::to_string(reinterpret_cast<std::uintptr_t>(this->_p->ctx)) + "  | flagConnected: " + std::to_string(!this->_p->flagNotConnected),"");
+        std::cerr << stdErrorMsg("get_1_DATA()","Modbus context does not exist","");
         return -1;
     }
     uint16_t data[1];
